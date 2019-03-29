@@ -7,7 +7,6 @@ import javax.media.MediaLocator;
 import javax.media.Player;
 import javax.media.PlugInManager;
 import javax.media.format.AudioFormat;
-//holamundo putos
 public class AudioTest {
 public static void main(String[] args) {
     Format input1 = new AudioFormat(AudioFormat.MPEGLAYER3);
