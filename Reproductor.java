@@ -1,7 +1,6 @@
 package test;
 
 import java.io.File;
-//ESte es un comentario para git
 import javax.media.Format;
 import javax.media.Manager;
 import javax.media.MediaLocator;
