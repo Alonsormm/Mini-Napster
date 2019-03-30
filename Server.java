@@ -23,17 +23,23 @@ public class Server{
 
 		public void run(){
 			Object obj;
-           
+            Map<String,String> map = new HashMap<String,String>();
 			try{
 				while(true){
 					obj =(Object)reader.readObject();
-					if(obj instanceof String)
-                		tellEveryone(obj, writer);
-						System.out.println("Me llego :C\n");
-             	}
-           }catch(Exception ex){
+					String a = sock.getRemoteSocketAddress().toString();
+					if(obj instanceof ArrayList){
+						ArrayList<String> l = (ArrayList<String>) obj;
+					 	//System.out.println(l);
+						for(String i: l)
+							map.put(i,a);
+					}
+					System.out.println(map.get("a.mp3"));
+				}
+			}	
+           catch(Exception ex){
 				   ex.printStackTrace();
-		    }
+		   }
        }
 	}
     public static void main (String[] args) {
