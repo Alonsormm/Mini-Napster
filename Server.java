@@ -4,6 +4,7 @@ import java.util.*;
 
 public class Server{
 	ArrayList<ObjectOutputStream> clientObjectOutputStreams;
+	Canciones songs;
 	public class ClientHandler implements Runnable {
          ObjectOutputStream writer;
          ObjectInputStream reader;
@@ -19,36 +20,37 @@ public class Server{
 				System.out.println("Exce Servidor reader " + ex);
              	ex.printStackTrace();
 			}
-		} // close constructor
+		}
 
 		public void run(){
 			Object obj;
-            Map<String,String> map = new HashMap<String,String>();
+            Map<String,ArrayList<String>> canciones = new HashMap<String,ArrayList<String>>();
 			try{
 				while(true){
 					obj =(Object)reader.readObject();
 					String a = sock.getRemoteSocketAddress().toString();
 					if(obj instanceof ArrayList){
 						ArrayList<String> l = (ArrayList<String>) obj;
-					 	//System.out.println(l);
-						for(String i: l)
-							map.put(i,a);
+						for(String i : l){
+							songs.agregarCancion(a,i);
+						}
+						tellEveryone(songs.consultarTodasLasCanciones(),writer);
 					}
-					System.out.println(map.get("a.mp3"));
 				}
 			}	
            catch(Exception ex){
 				   ex.printStackTrace();
 		   }
-       }
+		}
 	}
     public static void main (String[] args) {
          new Server().go();
     }
 	public void go(){
     	clientObjectOutputStreams = new ArrayList<ObjectOutputStream>();
-		try {
+		try{
 			ServerSocket serverSock = new ServerSocket(5000);
+			songs = new Canciones();
        		while(true){
           		Socket clientSocket = serverSock.accept();
          		ObjectOutputStream writer = new ObjectOutputStream(clientSocket.getOutputStream());        
@@ -63,17 +65,14 @@ public class Server{
 	}
 	public void tellEveryone(Object obj, ObjectOutputStream writerp){
 		Iterator it = clientObjectOutputStreams.iterator();
-		while(it.hasNext()) {
+		while(it.hasNext()){
         	try{
            		ObjectOutputStream writer = (ObjectOutputStream) it.next();
-	   			if(writer.equals(writerp)){
-                	writer.writeObject(obj);
-           			writer.flush();
-	   			}
-         }catch(Exception ex){
-              ex.printStackTrace();
-         }
-      
-       }
-   }
+                writer.writeObject(obj);
+           		writer.flush();
+        	 }catch(Exception ex){
+				ex.printStackTrace();
+			} 
+		}
+	}
 }
