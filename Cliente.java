@@ -1,16 +1,28 @@
 import java.io.File;
 import java.util.ArrayList;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
 public class Cliente implements LeeRed{
 	Red r;
 	ArrayList<String> songs;
 	String ipAct;
+	JFrame ventana;
 	public Cliente(){
 		r = new Red(this);
 		ArrayList<String> lista = listaArchivos();
 		r.escribeRed(lista);
 		songs = new ArrayList<String>();
+		crearVentana();
 	}
+
+	public void crearVentana(){
+		ventana = new JFrame();
+		ventana.setSize(100,100);
+		ventana.setVisible(true);
+	}
+
 	public ArrayList<String> listaArchivos(){
 		File folder = new File("Music");
         File[] listOfFiles = folder.listFiles();
