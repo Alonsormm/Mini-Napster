@@ -9,6 +9,7 @@ public class Cliente implements LeeRed{
 	ArrayList<String> songs;
 	String ipAct;
 	JFrame ventana;
+	JList<String> jL;
 	public Cliente(){
 		r = new Red(this);
 		ArrayList<String> lista = listaArchivos();
@@ -19,8 +20,9 @@ public class Cliente implements LeeRed{
 
 	public void crearVentana(){
 		ventana = new JFrame();
-		ventana.setSize(100,100);
-		ventana.setVisible(true);
+		ventana.setSize(500,500);
+		ventana.setVisible(true);		
+
 	}
 
 	public ArrayList<String> listaArchivos(){
@@ -34,7 +36,6 @@ public class Cliente implements LeeRed{
 		return lista;
 	}
 
-
 	public static void main(String[] ards){
 		new Cliente();
 	}
@@ -43,6 +44,7 @@ public class Cliente implements LeeRed{
 	public void leeRed(Object obj){
 		if(obj instanceof ArrayList){
 			songs = (ArrayList<String>)obj;
+			System.out.println(songs);// La arraylist song es el que tienes que enseñar en la interfaz
 		}
 		else if(obj instanceof String){
 			ipAct = (String)obj;
