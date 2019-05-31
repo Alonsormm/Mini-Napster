@@ -1,6 +1,6 @@
 //En mysql: SET GLOBAL time_zone = '-3:00';
-//Compilar: javac -cp .;beanutils.jar;commons-logging.jar Test.java
-//Ejecutar: java -cp .;mysqlcon.jar:beanutils.jar;commons-logging.jar;mysql-connector-java-8.0.15.jar Test
+//Compilar: javac -cp .:beanutils.jar:commons-logging.jar *.java
+//Ejecutar: java -cp .:mysqlcon.jar:beanutils.jar:commons-logging.jar:mysql-connector-java-8.0.15.jar Cliente
 /*
 Antes de probarlo:
 -Modifica el usuario y la contrasena en caso de ser necesario
@@ -20,8 +20,9 @@ class Login extends JFrame implements ActionListener{
     Connection conex;
     JLabel lab1,lab2;
     JButton login,regis;
-    JTextField user,pass;
-    
+    JTextField user;
+    JPasswordField pass;
+    boolean loginyes;
     public Login(){
         try{         
 			Class.forName("com.mysql.cj.jdbc.Driver"); 		
@@ -39,7 +40,8 @@ class Login extends JFrame implements ActionListener{
         login= new JButton("Login");
         regis= new JButton("Registry");
         user= new JTextField(25);
-        pass= new JTextField(25);
+        pass= new JPasswordField(25);
+        loginyes = false;
         lab1.setBounds(80,10,90,30); add(lab1);
         lab2.setBounds(50,50,90,30); add(lab2);
         login.setBounds(50,100,90,30); add(login);
@@ -48,15 +50,24 @@ class Login extends JFrame implements ActionListener{
         pass.setBounds(120,50,120,30); add(pass);
         login.addActionListener(this);
         regis.addActionListener(this);
+        setBounds(800,400,300,200);
+        setVisible(true);
     }
 
     public void actionPerformed(ActionEvent e){
         if(e.getSource()==login){
+            //String userS = user.getText();
+            String userS = "Alonsormm";
+            String passS = "Alonsormm2";
+            //String passS = pass.getText();
             try{
                 Statement statement=conex.createStatement();
-                ResultSet result= statement.executeQuery("select * from usuario where nombre= '"+user.getText()+"' and clave= '"+pass.getText()+"'");
+                ResultSet result= statement.executeQuery("select * from usuario where nombre= '"+userS+"' and clave= '"+passS+"'");
                 if(result.next()){
                     JOptionPane.showMessageDialog(null,"Bienvenido "+user.getText());
+                    new Cliente();
+                    setVisible(false);
+                    return;
                 }
                 else{ 
                     JOptionPane.showMessageDialog(null,"Usuario/clave incorrecto","Error",JOptionPane.WARNING_MESSAGE);
@@ -89,11 +100,8 @@ class Login extends JFrame implements ActionListener{
             catch(Exception ex) { System.out.println("Error en el query"); }
         }
     }
+    public static void main(String[] args) {
+        new Login();
+    }
 
-	public static void main(String args[]){
-        Login obj= new Login();
-        obj.setBounds(800,400,300,200);
-        obj.setVisible(true);
-        return;
-	}
 }
