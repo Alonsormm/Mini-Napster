@@ -25,7 +25,7 @@ class Login extends JFrame implements ActionListener{
     public Login(){
         try{         
 			Class.forName("com.mysql.cj.jdbc.Driver"); 		
-			conex=DriverManager.getConnection(url,"root","root"); //usuario,contrasena
+			conex=DriverManager.getConnection(url,"JBDC","root"); //usuario,contrasena
 			System.out.println("Se ha conectado a la base de datos");
 		}
 		catch(Exception ex){
@@ -55,10 +55,12 @@ class Login extends JFrame implements ActionListener{
             try{
                 Statement statement=conex.createStatement();
                 ResultSet result= statement.executeQuery("select * from usuario where nombre= '"+user.getText()+"' and clave= '"+pass.getText()+"'");
-                if(result.next()) 
+                if(result.next()){
                     JOptionPane.showMessageDialog(null,"Bienvenido "+user.getText());
-                else 
+                }
+                else{ 
                     JOptionPane.showMessageDialog(null,"Usuario/clave incorrecto","Error",JOptionPane.WARNING_MESSAGE);
+                }        
             }
             catch(Exception ex) { System.out.println("Error en el query"); }            
         }
@@ -92,5 +94,6 @@ class Login extends JFrame implements ActionListener{
         Login obj= new Login();
         obj.setBounds(800,400,300,200);
         obj.setVisible(true);
+        return;
 	}
 }

@@ -4,28 +4,45 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class Cliente implements LeeRed{
+public class Cliente implements LeeRed, ActionListener {
 	Red r;
 	ArrayList<String> songs;
 	String ipAct;
 	JFrame ventana;
-	JList<String> jL;
+	JList<Object> jL;
+	ArrayList<String> lista;
+	JButton play;
 	public Cliente(){
+		try{
+			new Login();
+		}catch(Exception e){
+			System.exit(0);
+		}
 		r = new Red(this);
-		ArrayList<String> lista = listaArchivos();
+		lista = listaArchivos();
 		r.escribeRed(lista);
-		songs = new ArrayList<String>();
-		crearVentana();
-
-
-		
 	}
+	
 
 	public void crearVentana(){
+		
+		//System.out.println(lista.toArray());
+		jL = new JList<Object>(lista.toArray());
 		ventana = new JFrame();
+		ventana.setLayout(new FlowLayout());
 		ventana.setSize(500,500);
-		ventana.setVisible(true);		
+		ventana.setVisible(true);
+		ventana.add(jL);
+		play = new JButton("play");
+		play.addActionListener(this);
+		ventana.add(play);
+	}
 
+	public void actionPerformed(ActionEvent e){
+		JButton temp = (JButton) e.getSource();
+		if(temp == play){
+			System.out.println(jL.getSelectedValue());
+		}
 	}
 
 	public ArrayList<String> listaArchivos(){
@@ -39,7 +56,7 @@ public class Cliente implements LeeRed{
 		return lista;
 	}
 
-	public static void main(String[] ards){
+	public static void main(String[] args){
 		new Cliente();
 	}
 
@@ -47,7 +64,9 @@ public class Cliente implements LeeRed{
 	public void leeRed(Object obj){
 		if(obj instanceof ArrayList){
 			songs = (ArrayList<String>)obj;
-			System.out.println(songs);// La arraylist song es el que tienes que enseñar en la interfaz
+			//System.out.println(songs);// La arraylist song es el que tienes que enseñar en la interfaz
+			crearVentana();
+			
 		}
 		else if(obj instanceof String){
 			ipAct = (String)obj;

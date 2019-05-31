@@ -31,17 +31,18 @@ public class Red {
             System.out.println("Error al crear los fujos de objeto"+e);
    }
    (new Thread( new IncomingReader(lr, oisNet) )).start();
-}  
-public void escribeRed(Object obj) {     
-    try {
-           oosNet.writeObject(obj);        
-           oosNet.flush();
-    } catch (IOException ex) { ex.printStackTrace(); }
-}
-ObjectOutputStream getOOSNet(OutputStream os) throws IOException {
-		return new ObjectOutputStream(os);
-}
-ObjectInputStream getOISNet(InputStream is) throws IOException {
-        	return new ObjectInputStream(is);
-}
+    }
+    
+    public void escribeRed(Object obj) {     
+        try {
+               oosNet.writeObject(obj);        
+               oosNet.flush();
+        } catch (IOException ex) { ex.printStackTrace(); }
+    }
+    ObjectOutputStream getOOSNet(OutputStream os) throws IOException {
+    		return new ObjectOutputStream(os);
+    }
+    ObjectInputStream getOISNet(InputStream is) throws IOException {
+            	return new ObjectInputStream(is);
+    }
 }
