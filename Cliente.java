@@ -16,6 +16,9 @@ public class Cliente implements LeeRed{
 		r.escribeRed(lista);
 		songs = new ArrayList<String>();
 		crearVentana();
+
+
+		
 	}
 
 	public void crearVentana(){
