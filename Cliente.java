@@ -97,11 +97,13 @@ public class Cliente implements LeeRed, ActionListener {
 			}
 			p = new Post2("Music/"+ nombreCancion);
 			ventana.add(p);
+			p.setText("Reproduciendo");
 			if(!lista.contains(nombreCancion))
 				lista.add(nombreCancion);
 		}
 		if(temp == pause){
 			p.accion(3, "a");
+			p.setText("Pausado");
 		}
 	}
 
