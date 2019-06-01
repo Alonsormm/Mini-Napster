@@ -10,14 +10,19 @@ public class Post2 extends JLabel{
 	public Boolean reproduciendo, pausado;
 	JButton bc1, bc2; 
 	Reproductor aTunesPlayer;
-	String nombre;
-	public Post2(String nombre){
+	public Post2(){
 	    reproduciendo=false;  
 	    pausado=false; 
 		aTunesPlayer=new Reproductor(this);
-		this.nombre = nombre;
+	}
+
+	public void reproducir(String nombre){
 		accion(2,nombre);
-	}  
+	}
+
+	public void pausa(){
+		accion(3,"s");
+	}
 	
 	public void accion(int n, String mp3){
 		if (n == 2){
@@ -71,8 +76,5 @@ public class Post2 extends JLabel{
 				e1.printStackTrace();
 			}
 		}
-	}
-	public static void main(String[] args) {
-		new Post2("a.mp3");
 	}
 }

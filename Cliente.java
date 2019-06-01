@@ -29,6 +29,7 @@ public class Cliente implements LeeRed, ActionListener {
 		lista = listaArchivos();
 		PORT = 6000;
 		listModel = new DefaultListModel<String>();
+		p = new Post2();
 		r.escribeRed(lista);
 	}
 
@@ -69,13 +70,15 @@ public class Cliente implements LeeRed, ActionListener {
 			ventana.setSize(500, 500);
 			ventana.setVisible(true);
 			ventana.add(jL);
-			play = new JButton("play");
+			play = new JButton("Play");
 			play.addActionListener(this);
-			pause = new JButton("Pause");
+			pause = new JButton("Stop");
 			pause.addActionListener(this);
 			botones.add(play);
 			botones.add(pause);
 			ventana.add(botones);
+			ventana.add(p);
+			p.setText("Elige una cancion");
 		} else {
 			agregarFaltantes();
 		}
@@ -85,6 +88,8 @@ public class Cliente implements LeeRed, ActionListener {
 		JButton temp = (JButton) e.getSource();
 		if (temp == play) {
 			nombreCancion = jL.getSelectedValue();
+			if(p.getText()=="Reproduciendo")
+				p.pausa();
 			if(!lista.contains(nombreCancion))
 				r.escribeRed(nombreCancion);
 			try {
@@ -95,15 +100,14 @@ public class Cliente implements LeeRed, ActionListener {
 			if(p!=null){
 				p.accion(3, "mp3");				
 			}
-			p = new Post2("Music/"+ nombreCancion);
-			ventana.add(p);
+			p.reproducir("Music/"+nombreCancion);
 			p.setText("Reproduciendo");
 			if(!lista.contains(nombreCancion))
 				lista.add(nombreCancion);
 		}
 		if(temp == pause){
-			p.accion(3, "a");
-			p.setText("Pausado");
+			p.pausa();
+			p.setText("Elige una cancion");
 		}
 	}
 
