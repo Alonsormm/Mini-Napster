@@ -56,10 +56,10 @@ class Login extends JFrame implements ActionListener{
 
     public void actionPerformed(ActionEvent e){
         if(e.getSource()==login){
-            //String userS = user.getText();
-            String userS = "Alonsormm";
-            String passS = "Alonsormm2";
-            //String passS = pass.getText();
+            String userS = user.getText();
+            //String userS = "Alonsormm";
+            //String passS = "Alonsormm2";
+            String passS = pass.getText();
             try{
                 Statement statement=conex.createStatement();
                 ResultSet result= statement.executeQuery("select * from usuario where nombre= '"+userS+"' and clave= '"+passS+"'");
