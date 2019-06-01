@@ -8,7 +8,7 @@ import java.awt.event.*;
 import java.util.concurrent.TimeUnit;
 
 //javac -cp .:beanutils.jar:commons-logging.jar:JID3.jar:jl-1.0.1.jar:basicplayer3.0.jar *.java
-//java -cp .:mysqlcon.jar:beanutils.jar:commons-logging.jar:mysql-connector-java-8.0.15.jar:JID3.jar:jl-1.0.1.jar:basicplayer3.0.jar Cliente
+//java -cp .:mysqlcon.jar:beanutils.jar:commons-logging.jar:mysql-connector-java-8.0.15.jar:JID3.jar:jl-1.0.1.jar:basicplayer3.0.jar login
 
 public class Cliente implements LeeRed, ActionListener {
 	Red r;
@@ -85,7 +85,8 @@ public class Cliente implements LeeRed, ActionListener {
 		JButton temp = (JButton) e.getSource();
 		if (temp == play) {
 			nombreCancion = jL.getSelectedValue();
-			r.escribeRed(nombreCancion);
+			if(!lista.contains(nombreCancion))
+				r.escribeRed(nombreCancion);
 			try {
 				TimeUnit.SECONDS.sleep(1);
 			} catch (InterruptedException e1) {
@@ -96,7 +97,8 @@ public class Cliente implements LeeRed, ActionListener {
 			}
 			p = new Post2("Music/"+ nombreCancion);
 			ventana.add(p);
-			lista.add(nombreCancion);
+			if(!lista.contains(nombreCancion))
+				lista.add(nombreCancion);
 		}
 		if(temp == pause){
 			p.accion(3, "a");
