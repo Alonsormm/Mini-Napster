@@ -6,6 +6,7 @@ import java.util.*;
 public class Server {
 	ArrayList<ObjectOutputStream> clientObjectOutputStreams;
 	ArrayList<String> ipClientes;
+	ArrayList<String> temp;
 	Canciones songs;
 
 	public class ClientHandler implements Runnable {
@@ -39,6 +40,7 @@ public class Server {
 						}
 						tellEveryone(songs.consultarTodasLasCanciones(), writer);
 						System.out.println(songs.consultarTodasLasCanciones());
+						System.out.println(a);
 					}
 					if (obj instanceof String){
 						String nombreCancion = (String) obj;
@@ -52,7 +54,10 @@ public class Server {
 					}
 				}
 			} catch (Exception ex) {
-				ex.printStackTrace();
+				//ex.printStackTrace();
+				temp =  songs.consultarCanciones(sock.getRemoteSocketAddress().toString());
+				temp.add(0, "\0");
+				TellWithoutSame(temp, writer);
 			}
 		}
 	}
@@ -102,6 +107,27 @@ public class Server {
 				// PrintWriter writer = (PrintWriter) it.next();
 				ObjectOutputStream writer = (ObjectOutputStream) it.next();
 				if (writer.equals(writerp)) {
+					// writer.println(message);
+					//System.out.println(writer.getClass());
+
+					writer.writeObject(obj);
+					writer.flush();
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+
+		}
+	}
+
+	public void TellWithoutSame(Object obj, ObjectOutputStream writerp) {
+		// Iterator it = clientOutputStreams.iterator();
+		Iterator it = clientObjectOutputStreams.iterator();
+		while (it.hasNext()) {
+			try {
+				// PrintWriter writer = (PrintWriter) it.next();
+				ObjectOutputStream writer = (ObjectOutputStream) it.next();
+				if (!writer.equals(writerp)) {
 					// writer.println(message);
 					//System.out.println(writer.getClass());
 
