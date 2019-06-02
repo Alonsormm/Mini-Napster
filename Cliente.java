@@ -17,12 +17,12 @@ public class Cliente implements LeeRed, ActionListener {
 	JFrame ventana;
 	JList<String> jL;
 	ArrayList<String> lista;
-	JButton play, pause;
+	JButton play, pause, logo;
 	DefaultListModel<String> listModel;
 	String nombreCancion;
 	Post2 p;
 	int PORT;
-
+	JLabel nombrecool;
 	public Cliente() {
 
 		r = new Red(this);
@@ -62,23 +62,43 @@ public class Cliente implements LeeRed, ActionListener {
 		if (ventana == null) {
 			agregarFaltantes();
 			JPanel botones = new JPanel();
-			botones.setLayout(new GridLayout(1, 2));
+			botones.setLayout(new GridLayout(1,3));
+			botones.setBackground(Color.BLACK);
 			jL = new JList<String>(listModel);
 			jL.setBounds(10, 10, 200, 200);
+			jL.setBackground(Color.BLACK);
+			jL.setForeground(Color.white);
 			ventana = new JFrame();
-			ventana.setLayout(new GridLayout(3, 1));
-			ventana.setSize(500, 500);
+			nombrecool = new JLabel("");
+			ventana.setLayout(new GridLayout(4, 1));
+			ventana.setSize(600, 600);
 			ventana.setVisible(true);
-			ventana.add(jL);
-			play = new JButton("Play");
+			ventana.getContentPane().setBackground(Color.BLACK);
+			logo = new JButton("",new ImageIcon("napster-logo.png"));
+			logo.setBorderPainted(false);
+			logo.setFocusPainted(false);
+			logo.setContentAreaFilled(false);
+			play = new JButton("",new ImageIcon("Play.png"));
+			play.setBorderPainted(false);
+			play.setFocusPainted(false);
+			play.setContentAreaFilled(false);
 			play.addActionListener(this);
-			pause = new JButton("Stop");
+			pause = new JButton("",new ImageIcon("Stop.png"));
+			pause.setBorderPainted(false);
+			pause.setFocusPainted(false);
+			pause.setContentAreaFilled(false);
 			pause.addActionListener(this);
 			botones.add(play);
 			botones.add(pause);
+			botones.add(nombrecool);
+			nombrecool.setText("");
+			p.setForeground(Color.BLACK);
+			ventana.add(logo);
+			ventana.add(jL);
 			ventana.add(botones);
 			ventana.add(p);
-			p.setText("Elige una cancion");
+			p.setText("Elije alguna cancion!");
+			p.setForeground(Color.white);
 		} else {
 			agregarFaltantes();
 		}
@@ -98,7 +118,7 @@ public class Cliente implements LeeRed, ActionListener {
 				e1.printStackTrace();
 			}
 			if(p!=null){
-				p.accion(3, "mp3");				
+				p.accion(3, "mp3");
 			}
 			p.reproducir("Music/"+nombreCancion);
 			p.setText("Reproduciendo");
@@ -107,7 +127,7 @@ public class Cliente implements LeeRed, ActionListener {
 		}
 		if(temp == pause){
 			p.pausa();
-			p.setText("Elige una cancion");
+			p.setText("Elije alguna cacion");
 		}
 	}
 
@@ -137,8 +157,8 @@ public class Cliente implements LeeRed, ActionListener {
 		else if(obj instanceof String){
 			String nombreCancion = (String) obj;
 			crearCliente(PORT, nombreCancion);
-			
-		}	
+
+		}
 		else if(obj instanceof Boolean){
 			crearServidor(PORT);
 		}
