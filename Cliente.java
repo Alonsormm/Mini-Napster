@@ -22,7 +22,8 @@ public class Cliente implements LeeRed, ActionListener {
 	String nombreCancion;
 	Post2 p;
 	int PORT;
-	JLabel nombrecool;
+	JTextField nombrecool;
+	JButton buscarAlChile;
 	public Cliente() {
 
 		r = new Red(this);
@@ -33,7 +34,8 @@ public class Cliente implements LeeRed, ActionListener {
 		r.escribeRed(lista);
 	}
 
-	public void agregarFaltantes() {
+	public void agregarFaltantes(){
+		System.out.println(songs);
 			for (int i = 0; i < songs.size(); i++) {
 				if (listModel.contains(songs.get(i))) {
 					continue;
@@ -58,18 +60,32 @@ public class Cliente implements LeeRed, ActionListener {
 		listModel.clear();
 	}
 
+	public void quitarMios(){
+		for(int i = 0 ; i < lista.size();i++){
+			if(songs.contains(lista.get(i)))
+				songs.remove(lista.get(i));
+		}
+	}
+
 	public void crearVentana() {
 		if (ventana == null) {
+			quitarMios();
 			agregarFaltantes();
 			JPanel botones = new JPanel();
+			JPanel busqueda = new JPanel();
+			busqueda.setLayout(new GridLayout(2,1));
 			botones.setLayout(new GridLayout(1,3));
 			botones.setBackground(Color.BLACK);
+			JScrollPane scrollPane = new JScrollPane();
 			jL = new JList<String>(listModel);
 			jL.setBounds(10, 10, 200, 200);
 			jL.setBackground(Color.BLACK);
 			jL.setForeground(Color.white);
+			scrollPane.setViewportView(jL);
 			ventana = new JFrame();
-			nombrecool = new JLabel("");
+			nombrecool = new JTextField();
+			buscarAlChile = new JButton("Buscar");
+			buscarAlChile.addActionListener(this);
 			ventana.setLayout(new GridLayout(4, 1));
 			ventana.setSize(600, 600);
 			ventana.setVisible(true);
@@ -90,18 +106,30 @@ public class Cliente implements LeeRed, ActionListener {
 			pause.addActionListener(this);
 			botones.add(play);
 			botones.add(pause);
-			botones.add(nombrecool);
-			nombrecool.setText("");
+			busqueda.add(nombrecool);
+			busqueda.add(buscarAlChile);
+			botones.add(busqueda);
+			//nombrecool.setText("Busqueda");
 			p.setForeground(Color.BLACK);
 			ventana.add(logo);
-			ventana.add(jL);
+			ventana.add(scrollPane);
 			ventana.add(botones);
 			ventana.add(p);
 			p.setText("Elije alguna cancion!");
 			p.setForeground(Color.white);
 		} else {
+			quitarMios();
 			agregarFaltantes();
 		}
+	}
+
+	public void buscar(String a){
+		for(int i = 0 ; i < songs.size();i++){
+			if(songs.get(i).indexOf(a) == -1)
+				listModel.removeElement(songs.get(i));
+		}
+		if(a.equals(""))
+			agregarFaltantes();
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -128,6 +156,9 @@ public class Cliente implements LeeRed, ActionListener {
 		if(temp == pause){
 			p.pausa();
 			p.setText("Elije alguna cacion");
+		}
+		if(temp == buscarAlChile){
+			buscar(nombrecool.getText());
 		}
 	}
 
